@@ -5,12 +5,19 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Welcome</title>
+<%
+String envVar = System.getenv("JDBC_CONNECTION_STRING");
+String prop = System.getProperty("JDBC_CONNECTION_STRING");
+String dbHost = System.getProperty("dbHost");
+System.out.println("dbHost is ->"+dbHost);
+System.out.println("prop is ->"+prop);
+%>
 </head>
 <body>
 	<table align="center">
 		<tr>
-			<td><a href="login">Login</a></td>
-			<td><a href="register">Register</a></td>
+			<td><a href="login"><%=dbHost %>Ra Login</a></td>
+			<td><a href="register"><%=prop %>Rajesh Register</a></td>
 		</tr>
 	</table>
 </body>
