@@ -1,42 +1,56 @@
-version: 0.2 
-
-
-env: 
-    parameter-store: 
-        DB_HOST: /my-app/cloudathon-app/db-host 
-        DB_UNAME: /my-app/cloudathon-app/db-user 
-        DB_PWD: /my-app/cloudathon-app/db-password 
-phases: 
-  install: 
-    runtime-versions: 
-      java: openjdk8 
-  build: 
-    commands: 
-      - echo DB_HOST is $DB_HOST 
-      - echo DB_UNAME is $DB_UNAME 
-      - echo DB_PWD is $DB_PWD 
-      - echo Build started on `date` 
-      - cd springmvc-userlogin
-      - mvn test  
-  post_build: 
-    commands: 
-      - echo Build completed on `date` 
-      - mvn clean 
-      - mvn compile
-      - cd target
-      - ls
-      - cd ..
-      - mvn package
-      - cd target
-      - ls
-      - cd SpringMvcUser
-      - sed -i 's/Welcome/Welcome New/g' home.jsp
-      - cd ..
-      - cd ..
-      - mvn install -DdbHost="$DB_HOST" 
-      - cd ..
-      - mv springmvc-userlogin/target/SpringMvcUser.war SpringMvcUser.war
-      - ls
-artifacts: 
-  files: 
-    - SpringMvcUser.war
+version: 0.2  
+ 
+ 
+env:  
+    parameter-store:  
+        DB_HOST: /my-app/cloudathon-app/db-host  
+        DB_UNAME: /my-app/cloudathon-app/db-user  
+        DB_PWD: /my-app/cloudathon-app/db-password  
+phases:  
+  install:  
+    runtime-versions:  
+      java: openjdk8  
+  build:  
+    commands:  
+      - echo DB_HOST is $DB_HOST  
+      - echo DB_UNAME is $DB_UNAME  
+      - echo DB_PWD is $DB_PWD  
+      - echo Build started on `date`  
+      - cd springmvc-userlogin 
+      - mvn test   
+  post_build:  
+    commands:  
+      - echo Build completed on `date`  
+      - mvn clean  
+      - mvn compile 
+      - cd target 
+      - ls 
+      - cd .. 
+      - mvn package 
+      - cd target 
+      - ls 
+      - cd SpringMvcUser 
+      - sed -i 's/Welcome/Welcome New/g' home.jsp 
+      - cd .. 
+      - cd .. 
+      - mvn install -DdbHost="$DB_HOST"  
+      - cd .. 
+      - mv springmvc-userlogin/target/SpringMvcUser.war SpringMvcUser.war 
+      - cd springmvc-userlogin/target 
+      - ls 
+      - mkdir .ebextensions 
+      - cd .. 
+      - ls 
+      - cp .ebextensions/fix-path.config target/.ebextensions/ 
+      - cd target 
+      - ls 
+      - cd .ebextensions/ 
+      - ls 
+      - sed -i "s/localhost/$DB_PWD/g" fix-path.config 
+      - cd .. 
+      - cd .. 
+      - cd .. 
+artifacts:  
+  files:  
+    - SpringMvcUser.war 
+    - springmvc-userlogin/target/.ebextensions/**/* 
